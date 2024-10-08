@@ -77,9 +77,9 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'db_djfull',
+        'NAME': 'postgres',
         'HOST' : 'localhost' ,
-        'USER' : 'debs' ,
+        'USER' : 'postgres' ,
         'PASSWORD': '12345678' ,
         'PORT': 5432     
     }
@@ -123,6 +123,9 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR,"static"),)
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/login/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
