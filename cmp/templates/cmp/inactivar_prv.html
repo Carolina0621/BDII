@@ -1,0 +1,61 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+<form method = "POST" class="form-inline">
+    {% csrf_token%}
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-danger shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="alert">¿Inactivar <b>{{obj.descripcion}}</b>?</div>
+                                            <button type= "button" class="btn btn-danger" id="btnInactivar"><i class="far fa-question-circle"></i>Si, Inactivar</button>
+                                             <!--<a href="{% url 'inv:categoria_list' %}" class="btn btn-success"><span class = "fa fa-undo"></span>Cancelar</a>-->
+                                             <button type="button" class="btn btn-success" onclick="return cerra_modal()">No, Cancelar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+</form>
+   </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        var token=$('Input|name =csrfmiddlewaretoken').val();
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if(!(/^https:.*/.test(settings.url) || /^http:.*/.test(settings.url))) {
+                    xhr.setRequestHeader("X-CSRFToken", token);
+                }
+            }
+        });
+        $("#btnInactivar").click(function(e) {
+            e.preventDefault();
+           // alert("Probando");
+
+           var id = '{{obj.id}}';
+           var template="{% url 'cmp:proveedor_inactivar' obj.id %}";
+           var data = {"id" : id};
+           data = JSON.stringify(data);
+
+           $.ajax({
+            type: "POST",
+            url: template,
+            data: data,
+            beforeSend: function(xhr, settings) {
+                $.ajaxSettings.beforeSend(xhr, settings);
+            },
+            success: function(response){
+                console.log(response);
+                cerra_modal();
+                alert(response);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
+                cerra_modal();
+            }
+           });
+        });
+    });
+</script>
